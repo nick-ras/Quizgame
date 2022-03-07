@@ -14,20 +14,20 @@ namespace Quizgame // Note: actual namespace depends on the project name.
             var path = @"C:\Users\nick-\Desktop\List.xml";
             var QAndAList = new List<QAndA>();
 
+            //If QAndA list is already made, and you want to go straight to the game
+            // then the follow while loop + Serializer object can be skipped.
             while (serialize)
             {
-                var star = "*";
-                List<string> qA = UIMethods.QuestionAndAnswers();
+                List<string> qA = UIMethods.StringQAndAs();
                 var lA = new QAndA();
                 lA.Q = qA[0];
-                for (int j = 1; j < qA.Count; j++)
+                SetAndHideCorrectAnswer(qA, lA);
+                
+                //if La.Correct has not changed from starting value, loop will continue
+                if (lA.Correct == 0)
                 {
-
-                    if (qA[j].Contains(star))
-                    {
-                        lA.Correct = j;
-                        qA[j] = qA[j].Replace(star, "");
-                    }
+                    Console.WriteLine("You didnt mark the correct answer with \"*\"");
+                    continue;
                 }
                 lA.Answer1 = qA[1];
                 lA.Answer2 = qA[2];
@@ -62,9 +62,6 @@ namespace Quizgame // Note: actual namespace depends on the project name.
                     continue;
                 }
                 int answerInt = Convert.ToInt32(answerString);
-
-
-
 
                 if (answerInt == QuestionForTheRound.Correct)
                 {
@@ -113,6 +110,18 @@ namespace Quizgame // Note: actual namespace depends on the project name.
         {
             return int.TryParse(answerInString, out _);
         }
+        public static void SetAndHideCorrectAnswer(List<string> qA, QAndA lA)
+        {
+            var star = "*";
+            for (int j = 1; j < qA.Count; j++)
+            {
 
+                if (qA[j].Contains(star))
+                {
+                    lA.Correct = j;
+                    qA[j] = qA[j].Replace(star, "");
+                }
+            }
+        }
     }
 }

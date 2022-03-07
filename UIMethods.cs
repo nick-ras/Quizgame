@@ -8,18 +8,18 @@ namespace Quizgame
 {
     internal class UIMethods
     {
-        public static List<string> QuestionAndAnswers()
+        public static List<string> StringQAndAs()
         {
             List<string> qA = new List<string>();
             Console.WriteLine("Type your question");
             qA.Add (Console.ReadLine());
-            Console.WriteLine("Type an aswer, if its the correct answer, then put \"*\" at the end");
+            Console.WriteLine("Type an answer, if its the correct answer, then put \"*\" at the end");
             qA.Add(Console.ReadLine());
-            Console.WriteLine("Type an aswer, if its the correct answer, then put \"*\" at the end");
+            Console.WriteLine("Type an answer, if its the correct answer, then put \"*\" at the end");
             qA.Add(Console.ReadLine());
-            Console.WriteLine("Type an aswer, if its the correct answer, then put \"*\" at the end");
+            Console.WriteLine("Type an answer, if its the correct answer, then put \"*\" at the end");
             qA.Add(Console.ReadLine());
-            Console.WriteLine("Type an aswer, if its the correct answer, then put \"*\" at the end");
+            Console.WriteLine("Type an answer, if its the correct answer, then put \"*\" at the end");
             qA.Add(Console.ReadLine());
 
             return qA;
