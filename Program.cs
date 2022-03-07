@@ -15,41 +15,50 @@ namespace Quizgame // Note: actual namespace depends on the project name.
             var path = @"C:\Users\nick-\Desktop\List.xml";
             while (serialize)
             {
-                var star = "*";
-                List<string> qA = UIMethods.QuestionAndAnswers();
-                QAndA lA = new QAndA();
-                lA.Q = qA[0];
-                for (int i = 1; i < qA.Count; i++)
+                var QAndAList = new List<QAndA>();
+                for (int i = 0; i < 10; i++)
                 {
-                    
-                    if (qA[i].Contains(star))
+                    var star = "*";
+                    List<string> qA = UIMethods.QuestionAndAnswers();
+                    var lA = new QAndA();
+                    lA.Q = qA[0];
+                    for (int i = 1; i < qA.Count; i++)
                     {
-                        lA.Correct = i;
-                        qA[i] = qA[i].Replace(star, "");
+
+                        if (qA[i].Contains(star))
+                        {
+                            lA.Correct = i;
+                            qA[i] = qA[i].Replace(star, "");
+                        }
                     }
+                    lA.Answer1 = qA[1];
+                    lA.Answer2 = qA[2];
+                    lA.Answer3 = qA[3];
+                    lA.Answer4 = qA[4];
+                    QAndAList.Add(lA);
                 }
-                lA.Answer1 = qA[1];
-                lA.Answer2 = qA[2];
-                lA.Answer3 = qA[3];
-                lA.Answer4 = qA[4];
-                Serializer(lA, path);
+                
+                Serializer(QAndAList, path);
 
 
                 if (UIMethods.stopAddingQ() == false)
                 {
                     serialize = false;
                 }
+            
             }
 
             while (playGame)
             {
                 int rounds = 0;
                 int counter = 0;
-                QAndA AllQAndA = Deserialize(path);
-                
-                int answer = Convert.ToInt32(UIMethods.ShowQAndAs(AllQAndA));
+                List<QAndA> AllQAndA = Deserialize(path);
+                var rand = new Random();
+                QAndA QuestionForTheRound = AllQAndA[rand.Next(AllQAndA.Count)];
 
-                if (answer == AllQAndA.Correct)
+                int answer = Convert.ToInt32(UIMethods.ShowQAndAs(QuestionForTheRound));
+
+                if (answer == QuestionForTheRound.Correct)
                 {
                     Console.WriteLine("You guessed it!");
                     counter += 1;
@@ -65,25 +74,25 @@ namespace Quizgame // Note: actual namespace depends on the project name.
 
 
         }
-        public static void Serializer(QAndA listOut, string path)
+        public static void Serializer(List<QAndA> listToXML, string path)
         {
-            XmlSerializer x = new XmlSerializer(listOut.GetType());
+            XmlSerializer x = new XmlSerializer(listToXML.GetType());
 
             
             using (FileStream file = File.Create(path))
             {
-                x.Serialize(file, listOut);
+                x.Serialize(file, listToXML);
             }
         }
-        public static QAndA Deserialize(string path)
+        public static List<QAndA> Deserialize(string path)
         {
-            QAndA listIn = new QAndA();
-            XmlSerializer x = new XmlSerializer(typeof(QAndA));
+            XmlSerializer x = new XmlSerializer(typeof(List<QAndA>));
             using (FileStream file = File.OpenRead(path))
             {
-                listIn = x.Deserialize(file) as QAndA;
+                List<QAndA> getXMLList = x.Deserialize(file) as List<QAndA>;
+                return getXMLList;
             }
-            return listIn;
+            
         }
 
     }
