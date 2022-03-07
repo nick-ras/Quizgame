@@ -52,7 +52,10 @@ namespace Quizgame // Note: actual namespace depends on the project name.
                 List<QAndA> AllQAndA = Deserialize(path);
                 var rand = new Random();
                 QAndA QuestionForTheRound = AllQAndA[rand.Next(AllQAndA.Count)];
-
+                if (alreadyAnswered.Contains(QuestionForTheRound))
+                {
+                    continue;
+                }
                 int answer = Convert.ToInt32(UIMethods.ShowQAndAs(QuestionForTheRound));
 
                 if (answer == QuestionForTheRound.Correct)
@@ -63,7 +66,7 @@ namespace Quizgame // Note: actual namespace depends on the project name.
                 }
                 else
                 {
-                    Console.WriteLine("You guessed it!");
+                    Console.WriteLine("Wrong answer!");
                     continue;
                 }
                 rounds += 1;
