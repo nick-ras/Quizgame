@@ -44,41 +44,36 @@ namespace Quizgame // Note: actual namespace depends on the project name.
 
             Serializer(QAndAList, path);
 
+            List<QAndA> AllQAndA = Deserialize(path);
+            int rounds = 0;
+            int rightAnswers = 0;
             while (playGame)
             {
-                int rounds = 0;
-                int rightAnswers = 0;
-                List<QAndA> alreadyAnswered = new List<QAndA>();
-                List<QAndA> AllQAndA = Deserialize(path);
                 var rand = new Random();
                 QAndA QuestionForTheRound = AllQAndA[rand.Next(AllQAndA.Count)];
-                if (alreadyAnswered.Contains(QuestionForTheRound))
-                {
-                    continue;
-                }
+                
                 int answer = Convert.ToInt32(UIMethods.ShowQAndAs(QuestionForTheRound));
 
                 if (answer == QuestionForTheRound.Correct)
                 {
                     Console.WriteLine("You guessed it!");
                     rightAnswers += 1;
-                    continue;
                 }
                 else
                 {
                     Console.WriteLine("Wrong answer!");
-                    continue;
                 }
                 rounds += 1;
-                alreadyAnswered.Add(QuestionForTheRound);
-                if (rounds >= 10)
+
+                //Removed the question, after it has been asked
+                AllQAndA.RemoveAt(AllQAndA.IndexOf(QuestionForTheRound));
+
+                if (rounds >= 10 | AllQAndA.Count < 1)
                 {
                     playGame = false;
-                    Console.WriteLine($"You got {rightAnswers} out of 10!");
+                    Console.WriteLine($"You got {rightAnswers} out of {rounds}!");
                 }
             }
-
-
 
 
         }
