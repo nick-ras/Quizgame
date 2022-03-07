@@ -8,7 +8,6 @@ namespace Quizgame // Note: actual namespace depends on the project name.
     {
         static void Main(string[] args)
         {
-            int count = 0;
             bool serialize = true;
             bool playGame = true;
             
@@ -52,9 +51,22 @@ namespace Quizgame // Note: actual namespace depends on the project name.
                 var rand = new Random();
                 QAndA QuestionForTheRound = AllQAndA[rand.Next(AllQAndA.Count)];
                 
-                int answer = Convert.ToInt32(UIMethods.ShowQAndAs(QuestionForTheRound));
+                string answerString = UIMethods.ShowQAndAs(QuestionForTheRound);
+                if (!CheckConvertToInt(answerString))
+                {
+                    continue;
+                }
+                if (Convert.ToInt32(answerString) > 4)
+                {
+                    Console.WriteLine("Answer must be between 1-4");
+                    continue;
+                }
+                int answerInt = Convert.ToInt32(answerString);
 
-                if (answer == QuestionForTheRound.Correct)
+
+
+
+                if (answerInt == QuestionForTheRound.Correct)
                 {
                     Console.WriteLine("You guessed it!");
                     rightAnswers += 1;
@@ -96,6 +108,10 @@ namespace Quizgame // Note: actual namespace depends on the project name.
                 return getXMLList;
             }
             
+        }
+        public static bool CheckConvertToInt(string answerInString)
+        {
+            return int.TryParse(answerInString, out _);
         }
 
     }
