@@ -14,6 +14,10 @@ namespace Quizgame
         public string Answer3;
         public string Answer4;
         public int Correct;
-       
+
+        public override string ToString()
+        {
+            return $"{Q}";
+        }
     }
 }
