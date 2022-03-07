@@ -6,13 +6,16 @@ using System.Threading.Tasks;
 
 namespace Quizgame
 {
-    internal class QAndA
+    public class QAndA
     {
         public string Q;
         public string Answer1;
         public string Answer2;
         
 
-        
+        public static void SaveIt()
+        {
+            
+        }
     }
 }

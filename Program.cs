@@ -1,5 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using System;
+using System.Xml.Serialization;
 
 namespace Quizgame // Note: actual namespace depends on the project name.
 {
@@ -8,22 +9,34 @@ namespace Quizgame // Note: actual namespace depends on the project name.
         static void Main(string[] args)
         {
             int count = 0;
-            while (true)
+            bool serialize = true;
+            bool deserialize = true;
+            
+            var path = @"C:\Users\nick-\Desktop\List.xml";
+            while (serialize)
             {
-                List<string> list = UIMethods.QuestionAndAnswers();
+                List<string> qA = UIMethods.QuestionAndAnswers();
+                QAndA lA = new QAndA();
+                lA.Q = qA[0];
+                lA.Answer1 = qA[1];
+                lA.Answer2 = qA[2];
 
-                Serializer(list);
+
+
+                Serializer(lA, path);
 
 
                 if (UIMethods.stopAddingQ() == false)
                 {
-                    break;
+                    serialize = false;
                 }
             }
-            /*while (true)
+            while (deserialize)
             {
-
-                if (UIMethods.AskQ() == "0")
+                QAndA AllQAndA = Deserialize(path);
+                UIMethods.ShowQAndAs();
+                deserialize = false;
+                /*if (UIMethods.AskQ() == "0")
                 {
                     count += 1;
                     Console.WriteLine("You guessed correct");
@@ -31,19 +44,29 @@ namespace Quizgame // Note: actual namespace depends on the project name.
                 else
                 {
                     Console.WriteLine("Wrong answer");
-                }
-            }*/
-        }
-        public static void Serializer(List<string> list)
-        {
-            System.Xml.Serialization.XmlSerializer x = new System.Xml.Serialization.XmlSerializer(list.GetType());
-
-            var path = @"C:\Users\nick-\Desktop\List.xml";
-            using (FileStream file = File.Create(path))
-            {
-                x.Serialize(file, list);
+                }*/
             }
         }
-                
+        public static void Serializer(QAndA listOut, string path)
+        {
+            XmlSerializer x = new XmlSerializer(listOut.GetType());
+
+            
+            using (FileStream file = File.Create(path))
+            {
+                x.Serialize(file, listOut);
+            }
+        }
+        public static QAndA Deserialize(string path)
+        {
+            QAndA listIn = new QAndA();
+            XmlSerializer x = new XmlSerializer(typeof(QAndA));
+            using (FileStream file = File.OpenRead(path))
+            {
+                listIn = x.Deserialize(file) as QAndA;
+            }
+            return listIn;
+        }
+
     }
 }

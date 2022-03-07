@@ -17,10 +17,10 @@ namespace Quizgame
             qA.Add ($"{Console.ReadLine()}*");
             Console.WriteLine("Type a possible that is not correct");
             qA.Add(Console.ReadLine());
-
+            
             return qA;
         }
-        public static string AskQ(string q, string c, string iC)
+        public static string GetQandAs(string q, string c, string iC)
         {
             Console.WriteLine($"{q}. If {c} press 0. If {iC} press 1");
 
@@ -35,6 +35,10 @@ namespace Quizgame
                 return false;
             }
             return true;
+        }
+        public static void ShowQAndAs()
+        {
+            Console.WriteLine(QAndA.Q);
         }
     }
 }
