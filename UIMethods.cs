@@ -36,9 +36,9 @@ namespace Quizgame
             }
             return true;
         }
-        public static void ShowQAndAs()
+        public static void ShowQAndAs(QAndA AllQAndA)
         {
-            Console.WriteLine(QAndA.Q);
+            Console.WriteLine(AllQAndA.Q);
         }
     }
 }

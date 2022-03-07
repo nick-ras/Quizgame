@@ -31,21 +31,21 @@ namespace Quizgame // Note: actual namespace depends on the project name.
                     serialize = false;
                 }
             }
-            while (deserialize)
+            
+            QAndA AllQAndA = Deserialize(path);
+            UIMethods.ShowQAndAs(AllQAndA);
+            Console.WriteLine(AllQAndA.Q);
+            deserialize = false;
+            /*if (UIMethods.AskQ() == "0")
             {
-                QAndA AllQAndA = Deserialize(path);
-                UIMethods.ShowQAndAs();
-                deserialize = false;
-                /*if (UIMethods.AskQ() == "0")
-                {
-                    count += 1;
-                    Console.WriteLine("You guessed correct");
-                }
-                else
-                {
-                    Console.WriteLine("Wrong answer");
-                }*/
+                count += 1;
+                Console.WriteLine("You guessed correct");
             }
+            else
+            {
+                Console.WriteLine("Wrong answer");
+            }*/
+            
         }
         public static void Serializer(QAndA listOut, string path)
         {
