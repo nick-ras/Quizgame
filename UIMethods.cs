@@ -13,13 +13,13 @@ namespace Quizgame
             List<string> qA = new List<string>();
             Console.WriteLine("Type your question");
             qA.Add (Console.ReadLine());
-            Console.WriteLine("Type an aswer, if its a correct answer, then put \"*\" at the end");
+            Console.WriteLine("Type an aswer, if its the correct answer, then put \"*\" at the end");
             qA.Add(Console.ReadLine());
-            Console.WriteLine("Type an aswer, if its a correct answer, then put \"*\" at the end");
+            Console.WriteLine("Type an aswer, if its the correct answer, then put \"*\" at the end");
             qA.Add(Console.ReadLine());
-            Console.WriteLine("Type an aswer, if its a correct answer, then put \"*\" at the end");
+            Console.WriteLine("Type an aswer, if its the correct answer, then put \"*\" at the end");
             qA.Add(Console.ReadLine());
-            Console.WriteLine("Type an aswer, if its a correct answer, then put \"*\" at the end");
+            Console.WriteLine("Type an aswer, if its the correct answer, then put \"*\" at the end");
             qA.Add(Console.ReadLine());
 
             return qA;
@@ -37,7 +37,7 @@ namespace Quizgame
         public static string ShowQAndAs(QAndA AllQAndA)
         {
 
-            Console.WriteLine($"{AllQAndA.Q}. Choose one of the following {AllQAndA.Answer1} press 1. If {AllQAndA.Answer2} press 2. If {AllQAndA.Answer3} press 3. If {AllQAndA.Answer4} press 4");
+            Console.WriteLine($"\\nQuestion:{AllQAndA.Q}. If {AllQAndA.Answer1} press 1. If {AllQAndA.Answer2} press 2. If {AllQAndA.Answer3} press 3. If {AllQAndA.Answer4} press 4");
             return Console.ReadLine();
         }
     }

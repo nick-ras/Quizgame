@@ -13,45 +13,42 @@ namespace Quizgame // Note: actual namespace depends on the project name.
             bool playGame = true;
             
             var path = @"C:\Users\nick-\Desktop\List.xml";
+            var QAndAList = new List<QAndA>();
+
             while (serialize)
             {
-                var QAndAList = new List<QAndA>();
-                for (int i = 0; i < 10; i++)
+                var star = "*";
+                List<string> qA = UIMethods.QuestionAndAnswers();
+                var lA = new QAndA();
+                lA.Q = qA[0];
+                for (int j = 1; j < qA.Count; j++)
                 {
-                    var star = "*";
-                    List<string> qA = UIMethods.QuestionAndAnswers();
-                    var lA = new QAndA();
-                    lA.Q = qA[0];
-                    for (int i = 1; i < qA.Count; i++)
+
+                    if (qA[j].Contains(star))
                     {
-
-                        if (qA[i].Contains(star))
-                        {
-                            lA.Correct = i;
-                            qA[i] = qA[i].Replace(star, "");
-                        }
+                        lA.Correct = j;
+                        qA[j] = qA[j].Replace(star, "");
                     }
-                    lA.Answer1 = qA[1];
-                    lA.Answer2 = qA[2];
-                    lA.Answer3 = qA[3];
-                    lA.Answer4 = qA[4];
-                    QAndAList.Add(lA);
                 }
-                
-                Serializer(QAndAList, path);
-
+                lA.Answer1 = qA[1];
+                lA.Answer2 = qA[2];
+                lA.Answer3 = qA[3];
+                lA.Answer4 = qA[4];
+                QAndAList.Add(lA);
 
                 if (UIMethods.stopAddingQ() == false)
                 {
                     serialize = false;
                 }
-            
             }
+
+            Serializer(QAndAList, path);
 
             while (playGame)
             {
                 int rounds = 0;
-                int counter = 0;
+                int rightAnswers = 0;
+                List<QAndA> alreadyAnswered = new List<QAndA>();
                 List<QAndA> AllQAndA = Deserialize(path);
                 var rand = new Random();
                 QAndA QuestionForTheRound = AllQAndA[rand.Next(AllQAndA.Count)];
@@ -61,12 +58,20 @@ namespace Quizgame // Note: actual namespace depends on the project name.
                 if (answer == QuestionForTheRound.Correct)
                 {
                     Console.WriteLine("You guessed it!");
-                    counter += 1;
+                    rightAnswers += 1;
+                    continue;
+                }
+                else
+                {
+                    Console.WriteLine("You guessed it!");
+                    continue;
                 }
                 rounds += 1;
+                alreadyAnswered.Add(QuestionForTheRound);
                 if (rounds >= 10)
                 {
                     playGame = false;
+                    Console.WriteLine($"You got {rightAnswers} out of 10!");
                 }
             }
 
