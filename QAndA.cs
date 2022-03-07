@@ -11,6 +11,9 @@ namespace Quizgame
         public string Q;
         public string Answer1;
         public string Answer2;
+        public string Answer3;
+        public string Answer4;
+        public int Correct;
         
 
         public static void SaveIt()
