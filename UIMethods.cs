@@ -41,7 +41,7 @@ namespace Quizgame
         public static string ShowQAndAs(QAndA AllQAndA)
         {
 
-            Console.WriteLine($"\nQuestion=>  {AllQAndA.Question}. If {AllQAndA.AnswersList[0]} press 1. If {AllQAndA.AnswersList[1]} press 2. If {AllQAndA.AnswersList[1]} press 3. If {AllQAndA.AnswersList[3]} press 4");
+            Console.WriteLine($"\nQUESTIONTIME******************************\nQuestion=>  {AllQAndA.Question}. If {AllQAndA.AnswersList[0]} press 1. If {AllQAndA.AnswersList[1]} press 2. If {AllQAndA.AnswersList[1]} press 3. If {AllQAndA.AnswersList[3]} press 4");
             return Console.ReadLine();
         }
     }
