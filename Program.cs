@@ -8,7 +8,7 @@ namespace Quizgame // Note: actual namespace depends on the project name.
     {
         static void Main(string[] args)
         {
-            bool serialize = true;
+            bool makingQuestions = true;
             bool playGame = true;
             
             var path = @"C:\Users\nick-\Desktop\List.xml";
@@ -16,34 +16,34 @@ namespace Quizgame // Note: actual namespace depends on the project name.
 
             //If QAndA list is already made, and you want to go straight to the game
             // then the follow while loop + Serializer object can be skipped.
-            while (serialize)
+            while (makingQuestions)
             {
                 List<string> qA = UIMethods.StringQAndAs();
                 var lA = new QAndA();
                 lA.Q = qA[0];
-                SetAndHideCorrectAnswer(qA, lA);
+                QAndA.SetAndHideCorrectAnswer(qA, lA);
                 
                 //if La.Correct has not changed from starting value, loop will continue
-                if (lA.Correct == 0)
+                if (lA.IndexOfCorrectA == 0)
                 {
                     Console.WriteLine("You didnt mark the correct answer with \"*\"");
                     continue;
                 }
-                lA.Answer1 = qA[1];
-                lA.Answer2 = qA[2];
-                lA.Answer3 = qA[3];
-                lA.Answer4 = qA[4];
+                lA.AnswersList[0] = qA[1];
+                lA.AnswersList[1] = qA[2];
+                lA.AnswersList[2] = qA[3];
+                lA.AnswersList[3] = qA[4];
                 QAndAList.Add(lA);
 
                 if (UIMethods.stopAddingQ() == false)
                 {
-                    serialize = false;
+                    makingQuestions = false;
                 }
             }
 
-            Serializer(QAndAList, path);
+            QAndA.Serializer(QAndAList, path);
 
-            List<QAndA> AllQAndA = Deserialize(path);
+            List<QAndA> AllQAndA = QAndA.Deserialize(path);
             int rounds = 0;
             int rightAnswers = 0;
             while (playGame)
@@ -63,7 +63,7 @@ namespace Quizgame // Note: actual namespace depends on the project name.
                 }
                 int answerInt = Convert.ToInt32(answerString);
 
-                if (answerInt == QuestionForTheRound.Correct)
+                if (answerInt == QuestionForTheRound.IndexOfCorrectA)
                 {
                     Console.WriteLine("You guessed it!");
                     rightAnswers += 1;
@@ -74,7 +74,7 @@ namespace Quizgame // Note: actual namespace depends on the project name.
                 }
                 rounds += 1;
 
-                //Removed the question, after it has been asked
+                //Removing the question, after it has been asked to user
                 AllQAndA.RemoveAt(AllQAndA.IndexOf(QuestionForTheRound));
 
                 if (rounds >= 10 | AllQAndA.Count < 1)
@@ -83,45 +83,11 @@ namespace Quizgame // Note: actual namespace depends on the project name.
                     Console.WriteLine($"You got {rightAnswers} out of {rounds}!");
                 }
             }
-
-
         }
-        public static void Serializer(List<QAndA> listToXML, string path)
-        {
-            XmlSerializer x = new XmlSerializer(listToXML.GetType());
-
-            
-            using (FileStream file = File.Create(path))
-            {
-                x.Serialize(file, listToXML);
-            }
-        }
-        public static List<QAndA> Deserialize(string path)
-        {
-            XmlSerializer x = new XmlSerializer(typeof(List<QAndA>));
-            using (FileStream file = File.OpenRead(path))
-            {
-                List<QAndA> getXMLList = x.Deserialize(file) as List<QAndA>;
-                return getXMLList;
-            }
-            
-        }
+        
         public static bool CheckConvertToInt(string answerInString)
         {
             return int.TryParse(answerInString, out _);
-        }
-        public static void SetAndHideCorrectAnswer(List<string> qA, QAndA lA)
-        {
-            var star = "*";
-            for (int j = 1; j < qA.Count; j++)
-            {
-
-                if (qA[j].Contains(star))
-                {
-                    lA.Correct = j;
-                    qA[j] = qA[j].Replace(star, "");
-                }
-            }
         }
     }
 }
