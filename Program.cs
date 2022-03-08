@@ -61,7 +61,7 @@ namespace Quizgame // Note: actual namespace depends on the project name.
                 {
                     string answerString = UIMethods.ShowQAndAs(QuestionForTheRound);
 
-                    if (!CheckConvertToInt(answerString))
+                    if (!QAndA.CheckConvertToInt(answerString))
                     {
                         Console.WriteLine("Answer must be a whole number");
                         continue;
@@ -83,12 +83,12 @@ namespace Quizgame // Note: actual namespace depends on the project name.
 
                     if (answerInt == QuestionForTheRound.IndexOfCorrectA)
                     {
-                        Console.WriteLine("You guessed it!");
+                        UIMethods.GuessingRight();
                         rightAnswers += 1;
                     }
                     else
                     {
-                        Console.WriteLine("Wrong answer!");
+                        UIMethods.WrongGuess();
                     }
                     rounds += 1;
                 }
@@ -99,14 +99,9 @@ namespace Quizgame // Note: actual namespace depends on the project name.
                 if (rounds >= 10 | AllQAndA.Count < 1)
                 {
                     playGame = false;
-                    Console.WriteLine($"You got {rightAnswers} out of {rounds}!");
+                    UIMethods.Score(rightAnswers, rounds);
                 }
             }
-        }
-        
-        public static bool CheckConvertToInt(string answerInString)
-        {
-            return int.TryParse(answerInString, out _);
         }
     }
 }

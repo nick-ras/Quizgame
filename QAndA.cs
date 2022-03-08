@@ -14,7 +14,11 @@ namespace Quizgame
         public int IndexOfCorrectA;
         public string CorrectAString;
 
-        
+        //not sure if this method should be here
+        public static bool CheckConvertToInt(string answerInString)
+        {
+            return int.TryParse(answerInString, out _);
+        }
         public static void Serializer(List<QAndA> listToXML, string path)
         {
             XmlSerializer x = new XmlSerializer(listToXML.GetType());
