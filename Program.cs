@@ -8,36 +8,37 @@ namespace Quizgame // Note: actual namespace depends on the project name.
     {
         static void Main(string[] args)
         {
-            bool makingQuestions = true;
+            bool typingQandAs = true;
             bool playGame = true;
             
+            //remember to update
             var path = @"C:\Users\nick-\Desktop\List.xml";
-            var QAndAList = new List<QAndA>();
+            //var QAndAList = new List<QAndA>();
 
             //If QAndA list is already made, and you want to go straight to the game
             // then the follow while loop + Serializer object can be skipped.
-            while (makingQuestions)
+            while (typingQandAs)
             {
-                List<string> qA = UIMethods.StringQAndAs();
-                var lA = new QAndA();
-                lA.Q = qA[0];
-                QAndA.SetAndHideCorrectAnswer(qA, lA);
+                List<string> userInputQAndAs = UIMethods.StringQAndAs();
+                var quizObject = new QAndA();
+                quizObject.Question = userInputQAndAs[0];
+                QAndA.SetAndHideCorrectAnswer(userInputQAndAs, quizObject);
                 
                 //if La.Correct has not changed from starting value, loop will continue
-                if (lA.IndexOfCorrectA == 0)
+                if (quizObject.IndexOfCorrectA == 0)
                 {
-                    Console.WriteLine("You didnt mark the correct answer with \"*\"");
+                    didNotMarkAnswer();
                     continue;
                 }
-                lA.AnswersList[0] = qA[1];
-                lA.AnswersList[1] = qA[2];
-                lA.AnswersList[2] = qA[3];
-                lA.AnswersList[3] = qA[4];
-                QAndAList.Add(lA);
+                quizObject.AnswersList[0] = userInputQAndAs[1];
+                quizObject.AnswersList[1] = userInputQAndAs[2];
+                quizObject.AnswersList[2] = userInputQAndAs[3];
+                quizObject.AnswersList[3] = userInputQAndAs[4];
+                QAndAList.Add(quizObject);
 
                 if (UIMethods.stopAddingQ() == false)
                 {
-                    makingQuestions = false;
+                    typingQandAs = false;
                 }
             }
 

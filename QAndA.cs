@@ -9,7 +9,7 @@ namespace Quizgame
 {
     public class QAndA
     {
-        public string Q;
+        public string Question;
         public List<string> AnswersList = new List<string>();
         public int IndexOfCorrectA;
         public string CorrectAString;
@@ -50,7 +50,7 @@ namespace Quizgame
 
         public override string ToString()
         {
-            return $"{Q}";
+            return $"{Question}";
         }
     }
 }
