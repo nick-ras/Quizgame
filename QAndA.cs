@@ -11,7 +11,7 @@ namespace Quizgame
     {
         public string Question;
         public List<string> AnswersList = new List<string>();
-        public int IndexOfCorrectA;
+        public int IndexRightAnswer;
         public string CorrectAString;
 
         //not sure if this method should be here
@@ -47,7 +47,7 @@ namespace Quizgame
                 if (qA[j].Contains(star))
                 {
                     lA.CorrectAString = qA[j];
-                    lA.IndexOfCorrectA = j;
+                    lA.IndexRightAnswer = j;
                     qA[j] = qA[j].Replace(star, "");
                 }
             }

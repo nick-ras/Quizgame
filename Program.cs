@@ -11,22 +11,22 @@ namespace Quizgame // Note: actual namespace depends on the project name.
             bool typingQandAs = true;
             bool playGame = true;
 
-            //remember to update
+            //remember to update path when needed
             var path = @"C:\Users\nick-\Desktop\List.xml";
 
-            List<QAndA> QAndAList = new List<QAndA>();
+            List<QAndA> ListOfObjects = new List<QAndA>();
 
             //If QAndA list is already made, and you want to go straight to the game
             // then the follow while loop + Serializer object can be skipped.
             while (typingQandAs)
             {
-                List<string> userInputQAndAs = UIMethods.StringQAndAs();
+                List<string> userInputQAndAs = UIMethods.UserInput();
                 var quizObject = new QAndA();
                 quizObject.Question = userInputQAndAs[0];
                 QAndA.SetAndHideCorrectAnswer(userInputQAndAs, quizObject);
                 
                 //if La.Correct has not changed from starting value, loop will continue
-                if (quizObject.IndexOfCorrectA == 0)
+                if (quizObject.IndexRightAnswer == 0)
                 {
                     UIMethods.DidNotMarkAnswer();
                     continue;
@@ -37,7 +37,7 @@ namespace Quizgame // Note: actual namespace depends on the project name.
                 quizObject.AnswersList.Add(userInputQAndAs[4]);
 
                 //Adding object to list of objects
-                QAndAList.Add(quizObject);
+                ListOfObjects.Add(quizObject);
 
                 if (UIMethods.stopAddingQ() == false)
                 {
@@ -45,7 +45,7 @@ namespace Quizgame // Note: actual namespace depends on the project name.
                 }
             }
 
-            QAndA.Serializer(QAndAList, path);
+            QAndA.Serializer(ListOfObjects, path);
 
             List<QAndA> AllQAndA = QAndA.Deserialize(path);
             int rounds = 0;
@@ -63,7 +63,7 @@ namespace Quizgame // Note: actual namespace depends on the project name.
 
                     if (!QAndA.CheckConvertToInt(answerString))
                     {
-                        Console.WriteLine("Answer must be a whole number");
+                        UIMethods.WrongType();
                         continue;
                     }
                     else
@@ -72,7 +72,8 @@ namespace Quizgame // Note: actual namespace depends on the project name.
                     }
                     if (Convert.ToInt32(answerString) > 4 && Convert.ToInt32(answerString) < 0)
                     {
-                        Console.WriteLine("Answer must be between 1-4");
+                        UIMethods.TooHighOrLow();
+                        continue;
                     }
                     else
                     {
@@ -81,7 +82,7 @@ namespace Quizgame // Note: actual namespace depends on the project name.
 
                     int answerInt = Convert.ToInt32(answerString);
 
-                    if (answerInt == QuestionForTheRound.IndexOfCorrectA)
+                    if (answerInt == QuestionForTheRound.IndexRightAnswer)
                     {
                         UIMethods.GuessingRight();
                         rightAnswers += 1;
@@ -97,9 +98,9 @@ namespace Quizgame // Note: actual namespace depends on the project name.
                 AllQAndA.RemoveAt(AllQAndA.IndexOf(QuestionForTheRound));
 
                 if (rounds >= 10 | AllQAndA.Count < 1)
-                {
-                    playGame = false;
+                {                    
                     UIMethods.Score(rightAnswers, rounds);
+                    break;
                 }
             }
         }

@@ -8,7 +8,7 @@ namespace Quizgame
 {
     internal class UIMethods
     {
-        public static List<string> StringQAndAs()
+        public static List<string> UserInput()
         {
             List<string> qA = new List<string>();
             Console.WriteLine("Type your question");
@@ -43,6 +43,14 @@ namespace Quizgame
 
             Console.WriteLine($"\nQUESTIONTIME******************************\nQuestion=>  {AllQAndA.Question}. If {AllQAndA.AnswersList[0]} press 1. If {AllQAndA.AnswersList[1]} press 2. If {AllQAndA.AnswersList[1]} press 3. If {AllQAndA.AnswersList[3]} press 4");
             return Console.ReadLine();
+        }
+        public static void WrongType()
+        {
+            Console.WriteLine("Answer must be a whole number");
+        }
+        public static void TooHighOrLow()
+        {
+            Console.WriteLine("Answer must be between 1-4");
         }
         public static void Score(int rightAnswers, int rounds)
         {
