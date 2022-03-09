@@ -66,11 +66,8 @@ namespace Quizgame // Note: actual namespace depends on the project name.
                         UIMethods.WrongType();
                         continue;
                     }
-                    else
-                    {
-                        correctAnswer = true;
-                    }
-                    if (Convert.ToInt32(answerString) > 4 && Convert.ToInt32(answerString) < 0)
+                    
+                    if (Convert.ToInt32(answerString) > 4 | Convert.ToInt32(answerString) < 0)
                     {
                         UIMethods.TooHighOrLow();
                         continue;
