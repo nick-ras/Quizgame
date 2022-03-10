@@ -14,54 +14,62 @@ namespace Quizgame // Note: actual namespace depends on the project name.
             //remember to update path when needed
             var path = @"C:\Users\nick-\Desktop\List.xml";
             
-            
-
             if (!File.Exists(path))
             {
                 List<QAndA> ListOfObjects = new List<QAndA>();
                 while (typingQandAs)
                 {
-                    QAndA QAndAsFromUser = UIMethods.UserInput();
-                    QAndA.SetAndHideCorrectAnswer(QAndAsFromUser);
+                    QAndA QAndAFromUser = UIMethods.UserInput();
 
-                    if (QAndAsFromUser.CorrectAnswer == null)
+                    List<int> indexListOfCorrectAnswers = IndexCorrectAnswer(QAndAFromUser);
+
+                    for (int i = 0; i < indexListOfCorrectAnswers.Count; i++)
+                    {
+                        QAndAFromUser.AnswersList[indexListOfCorrectAnswers[i]] = QAndAFromUser.AnswersList[indexListOfCorrectAnswers[i]].Replace("*", "");
+
+                        QAndAFromUser.CorrectAnswers.Add(QAndAFromUser.AnswersList[indexListOfCorrectAnswers[i]]);
+                    }
+
+                    if (QAndAFromUser.CorrectAnswers == null)
                     {
                         UIMethods.DidNotMarkAnswer();
                         continue;
                     }
 
-                    ListOfObjects.Add(QAndAsFromUser);
+                    ListOfObjects.Add(QAndAFromUser);
 
-                    if (UIMethods.stopAddingQ() == false)
+                    if (!UIMethods.continueAddingQ())
                     {
                         typingQandAs = false;
                     }
                 }
-                QAndA.Serializer(ListOfObjects, path);
+                Serializer(ListOfObjects, path);
             }
             
 
-            List<QAndA> AllQAndA = QAndA.Deserialize(path);
-            int rounds = 0;
+            List<QAndA> AllQAndA = Deserialize(path);
+            int roundsPlayed = 0;
             int rightAnswers = 0;
             while (playGame)
             {
                 bool answerCheckUp = false;
                 var rand = new Random();
                 QAndA QAndAForTheRound = AllQAndA[rand.Next(AllQAndA.Count)];
-
+                bool won = false;
 
                 while (!answerCheckUp)
                 {
                     string answerString = UIMethods.ShowQAndAs(QAndAForTheRound);
 
-                    if (!QAndA.CheckConvertToInt(answerString))
+                    if (!CheckConvertToInt(answerString))
                     {
                         UIMethods.WrongType();
                         continue;
                     }
 
-                    if (Convert.ToInt32(answerString) > 3 | Convert.ToInt32(answerString) < 0)
+                    int answerToIndex = Convert.ToInt32(answerString);
+
+                    if (answerToIndex > 3 | answerToIndex < 0)
                     {
                         UIMethods.TooHighOrLow();
                         continue;
@@ -71,29 +79,70 @@ namespace Quizgame // Note: actual namespace depends on the project name.
                         answerCheckUp = true;
                     }
 
-                    int answerToIndex = Convert.ToInt32(answerString);
+                    roundsPlayed += 1;
 
-                    if (QAndAForTheRound.AnswersList[answerToIndex] == QAndAForTheRound.CorrectAnswer)
+                    for (int i = 0; i < QAndAForTheRound.CorrectAnswers.Count; i++)
                     {
-                        UIMethods.GuessingRight();
-                        rightAnswers += 1;
+                        if (QAndAForTheRound.AnswersList[answerToIndex] == QAndAForTheRound.CorrectAnswers[i])
+                        {
+                            UIMethods.GuessingRight();
+                            rightAnswers += 1;
+                            won = true;
+                            break;
+                        }
                     }
-                    else
-                    {
-                        UIMethods.WrongGuess();
-                    }
-                    rounds += 1;
+                    if (!won)
+                        {
+                            UIMethods.WrongGuess();
+                        }
                 }
                 
                 //Removing the question, after it has been asked to user
                 AllQAndA.RemoveAt(AllQAndA.IndexOf(QAndAForTheRound));
 
-                if (rounds >= 10 | AllQAndA.Count < 1)
+                if (roundsPlayed >= 10 || AllQAndA.Count < 1)
                 {                    
-                    UIMethods.Score(rightAnswers, rounds);
+                    UIMethods.Score(rightAnswers, roundsPlayed);
                     break;
                 }
             }
+        }
+        public static bool CheckConvertToInt(string answerInString)
+        {
+            return int.TryParse(answerInString, out _);
+        }
+        public static void Serializer(List<QAndA> listToXML, string path)
+        {
+            XmlSerializer x = new XmlSerializer(listToXML.GetType());
+
+
+            using (FileStream file = File.Create(path))
+            {
+                x.Serialize(file, listToXML);
+            }
+        }
+        public static List<QAndA> Deserialize(string path)
+        {
+            XmlSerializer x = new XmlSerializer(typeof(List<QAndA>));
+            using (FileStream file = File.OpenRead(path))
+            {
+                List<QAndA> getXMLList = x.Deserialize(file) as List<QAndA>;
+                return getXMLList;
+            }
+
+        }
+
+        public static List<int> IndexCorrectAnswer(QAndA QAndAsFromUser)
+        {
+            List<int> IndexesCorrectAnswers = new List<int>();
+            for (int j = 0; j < QAndAsFromUser.AnswersList.Count; j++)
+            {
+                if (QAndAsFromUser.AnswersList[j].Contains("*"))
+                {
+                    IndexesCorrectAnswers.Add(j);
+                }
+            }
+            return IndexesCorrectAnswers;
         }
     }
 }

@@ -25,7 +25,7 @@ namespace Quizgame
         {
             Console.WriteLine("You didnt mark the correct answer with \"*\"");
         }
-        public static bool stopAddingQ()
+        public static bool continueAddingQ()
         {
             Console.WriteLine("Press <Enter> to continue, if you wish to add more questions");
             var playAgain = Console.ReadKey();
