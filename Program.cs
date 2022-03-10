@@ -13,73 +13,67 @@ namespace Quizgame // Note: actual namespace depends on the project name.
 
             //remember to update path when needed
             var path = @"C:\Users\nick-\Desktop\List.xml";
+            
+            
 
-            List<QAndA> ListOfObjects = new List<QAndA>();
-
-            //If QAndA list is already made, and you want to go straight to the game
-            // then the follow while loop + Serializer object can be skipped.
-            while (typingQandAs)
+            if (!File.Exists(path))
             {
-                List<string> userInputQAndAs = UIMethods.UserInput();
-                var quizObject = new QAndA();
-                quizObject.Question = userInputQAndAs[0];
-                QAndA.SetAndHideCorrectAnswer(userInputQAndAs, quizObject);
-                
-                //if La.Correct has not changed from starting value, loop will continue
-                if (quizObject.IndexRightAnswer == 0)
+                List<QAndA> ListOfObjects = new List<QAndA>();
+                while (typingQandAs)
                 {
-                    UIMethods.DidNotMarkAnswer();
-                    continue;
-                }
-                quizObject.AnswersList.Add(userInputQAndAs[1]);
-                quizObject.AnswersList.Add(userInputQAndAs[2]);
-                quizObject.AnswersList.Add(userInputQAndAs[3]);
-                quizObject.AnswersList.Add(userInputQAndAs[4]);
+                    QAndA QAndAsFromUser = UIMethods.UserInput();
+                    QAndA.SetAndHideCorrectAnswer(QAndAsFromUser);
 
-                //Adding object to list of objects
-                ListOfObjects.Add(quizObject);
+                    if (QAndAsFromUser.CorrectAnswer == null)
+                    {
+                        UIMethods.DidNotMarkAnswer();
+                        continue;
+                    }
 
-                if (UIMethods.stopAddingQ() == false)
-                {
-                    typingQandAs = false;
+                    ListOfObjects.Add(QAndAsFromUser);
+
+                    if (UIMethods.stopAddingQ() == false)
+                    {
+                        typingQandAs = false;
+                    }
                 }
+                QAndA.Serializer(ListOfObjects, path);
             }
-
-            QAndA.Serializer(ListOfObjects, path);
+            
 
             List<QAndA> AllQAndA = QAndA.Deserialize(path);
             int rounds = 0;
             int rightAnswers = 0;
             while (playGame)
             {
-                bool correctAnswer = false;
+                bool answerCheckUp = false;
                 var rand = new Random();
-                QAndA QuestionForTheRound = AllQAndA[rand.Next(AllQAndA.Count)];
-                
-                
-                while (!correctAnswer)
+                QAndA QAndAForTheRound = AllQAndA[rand.Next(AllQAndA.Count)];
+
+
+                while (!answerCheckUp)
                 {
-                    string answerString = UIMethods.ShowQAndAs(QuestionForTheRound);
+                    string answerString = UIMethods.ShowQAndAs(QAndAForTheRound);
 
                     if (!QAndA.CheckConvertToInt(answerString))
                     {
                         UIMethods.WrongType();
                         continue;
                     }
-                    
-                    if (Convert.ToInt32(answerString) > 4 | Convert.ToInt32(answerString) < 0)
+
+                    if (Convert.ToInt32(answerString) > 3 | Convert.ToInt32(answerString) < 0)
                     {
                         UIMethods.TooHighOrLow();
                         continue;
                     }
                     else
                     {
-                        correctAnswer = true;
+                        answerCheckUp = true;
                     }
 
-                    int answerInt = Convert.ToInt32(answerString);
+                    int answerToIndex = Convert.ToInt32(answerString);
 
-                    if (answerInt == QuestionForTheRound.IndexRightAnswer)
+                    if (QAndAForTheRound.AnswersList[answerToIndex] == QAndAForTheRound.CorrectAnswer)
                     {
                         UIMethods.GuessingRight();
                         rightAnswers += 1;
@@ -92,7 +86,7 @@ namespace Quizgame // Note: actual namespace depends on the project name.
                 }
                 
                 //Removing the question, after it has been asked to user
-                AllQAndA.RemoveAt(AllQAndA.IndexOf(QuestionForTheRound));
+                AllQAndA.RemoveAt(AllQAndA.IndexOf(QAndAForTheRound));
 
                 if (rounds >= 10 | AllQAndA.Count < 1)
                 {                    

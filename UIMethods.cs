@@ -8,21 +8,18 @@ namespace Quizgame
 {
     internal class UIMethods
     {
-        public static List<string> UserInput()
+        public static QAndA UserInput()
         {
-            List<string> qA = new List<string>();
+            QAndA qAndA = new QAndA();
             Console.WriteLine("Type your question");
-            qA.Add (Console.ReadLine());
-            Console.WriteLine("Type an answer, if its a correct one, then put \"*\" at the end");
-            qA.Add(Console.ReadLine());
-            Console.WriteLine("Type an answer, if its a correct one, then put \"*\" at the end");
-            qA.Add(Console.ReadLine());
-            Console.WriteLine("Type an answer, if its a correct one, then put \"*\" at the end");
-            qA.Add(Console.ReadLine());
-            Console.WriteLine("Type an answer, if its a correct one, then put \"*\" at the end");
-            qA.Add(Console.ReadLine());
+            qAndA.Question = Console.ReadLine();
+            for (int i = 0; i < 4; i++)
+            {
+                Console.WriteLine("Type an answer, if its a correct one, then put \"*\" at the end");
+                qAndA.AnswersList.Add(Console.ReadLine());
+            }
 
-            return qA;
+            return qAndA;
         }
         public static void DidNotMarkAnswer()
         {
@@ -41,7 +38,7 @@ namespace Quizgame
         public static string ShowQAndAs(QAndA AllQAndA)
         {
 
-            Console.WriteLine($"\nQUESTIONTIME******************************\nQuestion=>  {AllQAndA.Question}. If {AllQAndA.AnswersList[0]} press 1. If {AllQAndA.AnswersList[1]} press 2. If {AllQAndA.AnswersList[1]} press 3. If {AllQAndA.AnswersList[3]} press 4");
+            Console.WriteLine($"\nQUESTIONTIME******************************\nQuestion=>  {AllQAndA.Question}. If {AllQAndA.AnswersList[0]} press 0. If {AllQAndA.AnswersList[1]} press 1. If {AllQAndA.AnswersList[1]} press 2. If {AllQAndA.AnswersList[3]} press 3");
             return Console.ReadLine();
         }
         public static void WrongType()

@@ -11,8 +11,8 @@ namespace Quizgame
     {
         public string Question;
         public List<string> AnswersList = new List<string>();
-        public int IndexRightAnswer;
-        public string CorrectAString;
+        //public int IndexRightAnswer;
+        public string CorrectAnswer;
 
         //not sure if this method should be here
         public static bool CheckConvertToInt(string answerInString)
@@ -39,16 +39,16 @@ namespace Quizgame
             }
 
         }
-        public static void SetAndHideCorrectAnswer(List<string> qA, QAndA lA)
+        public static void SetAndHideCorrectAnswer(QAndA qA)
         {
             var star = "*";
-            for (int j = 1; j < qA.Count; j++)
+            for (int j = 0; j < qA.AnswersList.Count; j++)
             {
-                if (qA[j].Contains(star))
+                if (qA.AnswersList[j].Contains(star))
                 {
-                    lA.CorrectAString = qA[j];
-                    lA.IndexRightAnswer = j;
-                    qA[j] = qA[j].Replace(star, "");
+                    qA.AnswersList[j] = qA.AnswersList[j].Replace(star, "");
+
+                    qA.CorrectAnswer = qA.AnswersList[j];
                 }
             }
         }
