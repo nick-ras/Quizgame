@@ -8,6 +8,10 @@ namespace Quizgame
 {
     internal class UIMethods
     {
+        /// <summary>
+        /// Prompt user for a question, and saves it to an new objects. aftewards it  prompts user for potential answers in a loop that loop 4 times.
+        /// </summary>
+        /// <returns>A QAndaA object with a Question var and a AnswersList with 4 answers</returns>
         public static QAndA UserInput()
         {
             QAndA qAndA = new QAndA();

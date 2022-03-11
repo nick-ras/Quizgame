@@ -23,6 +23,7 @@ namespace Quizgame // Note: actual namespace depends on the project name.
 
                     QAndAFromUser.ListCorrectAnswers = IndexCorrectAnswer(QAndAFromUser);
 
+                    //Removing star from correct answers
                     for (int i = 0; i < QAndAFromUser.ListCorrectAnswers.Count; i++)
                     {
                         QAndAFromUser.AnswersList[QAndAFromUser.ListCorrectAnswers[i]] = QAndAFromUser.AnswersList[QAndAFromUser.ListCorrectAnswers[i]].Replace("*", "");
@@ -43,7 +44,6 @@ namespace Quizgame // Note: actual namespace depends on the project name.
                 }
                 Serializer(ListOfObjects, path);
             }
-            
 
             List<QAndA> AllQAndA = Deserialize(path);
             int roundsPlayed = 0;
@@ -125,7 +125,11 @@ namespace Quizgame // Note: actual namespace depends on the project name.
             }
 
         }
-
+        /// <summary>
+        /// finds strings that has contains a star and add it to a internal list
+        /// </summary>
+        /// <param name="QAndAsFromUser"></param>
+        /// <returns>returns a list with the indexes of the strings that contains a star</returns>
         public static List<int> IndexCorrectAnswer(QAndA QAndAsFromUser)
         {
             List<int> IndexesCorrectAnswers = new List<int>();
