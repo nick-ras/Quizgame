@@ -21,26 +21,20 @@ namespace Quizgame // Note: actual namespace depends on the project name.
                 {
                     QAndA QAndAFromUser = UIMethods.UserInput();
 
-                    QAndAFromUser.ListCorrectAnswers = IndexCorrectAnswer(QAndAFromUser);
-                    //Removing star from correct answers
-                    for (int i = 0; i < QAndAFromUser.AnswersList.Count; i++)
+                    if (QAndAFromUser.ListCorrectAnswers.Count < 1)
                     {
-                        QAndAFromUser.AnswersList[i] = QAndAFromUser.AnswersList[i].TrimEnd(' ', '*');
-                    }
-
-                    if (QAndAFromUser.ListCorrectAnswers.Count == 0)
-                    {
-                        UIMethods.DidNotMarkAnswer();
+                        UIMethods.DidNotMarkCorrectAnswer();
                         continue;
                     }
 
                     ListOfObjects.Add(QAndAFromUser);
 
-                    if (!UIMethods.continueAddingQ())
+                    if (!UIMethods.ContinueAddingQ())
                     {
                         typingQandAs = false;
                     }
                 }
+
                 Serializer(ListOfObjects, path);
             }
 
@@ -123,23 +117,6 @@ namespace Quizgame // Note: actual namespace depends on the project name.
                 return getXMLList;
             }
 
-        }
-        /// <summary>
-        /// Iterates through AnswerList in a QAndaA objects, and finds strings that has contains a star and add it to a internal list
-        /// </summary>
-        /// <param name="QAndAsFromUser"></param>
-        /// <returns>returns a list with the indexes of the strings that contains a star</returns>
-        public static List<int> IndexCorrectAnswer(QAndA QAndAsFromUser)
-        {
-            List<int> IndexesCorrectAnswers = new List<int>();
-            for (int j = 0; j < QAndAsFromUser.AnswersList.Count; j++)
-            {
-                if (QAndAsFromUser.AnswersList[j].Contains("*"))
-                {
-                    IndexesCorrectAnswers.Add(j);
-                }
-            }
-            return IndexesCorrectAnswers;
         }
         public static bool AnswerIsCorrect(int answerToIndex, QAndA QAndAForTheRound)
         {

@@ -14,22 +14,29 @@ namespace Quizgame
         /// <returns>A QAndaA object with a Question var and a AnswersList with 4 answers</returns>
         public static QAndA UserInput()
         {
-            QAndA qAndA = new QAndA();
+            QAndA qAndAObject = new QAndA();
             Console.WriteLine("Type your question");
-            qAndA.Question = Console.ReadLine();
+            qAndAObject.Question = Console.ReadLine();
             for (int i = 0; i < 4; i++)
             {
                 Console.WriteLine("Type an answer, if its a correct one, then put \"*\" at the end");
-                qAndA.AnswersList.Add(Console.ReadLine());
+                qAndAObject.AnswersList.Add(Console.ReadLine());
+                if (qAndAObject.AnswersList[i].Contains('*'))
+                {
+                    qAndAObject.AnswersList[i] = qAndAObject.AnswersList[i].Replace("*", "");
+                    qAndAObject.ListCorrectAnswers.Add(i);
+                }
             }
-
-            return qAndA;
+            return qAndAObject;
         }
-        public static void DidNotMarkAnswer()
+
+            
+        
+        public static void DidNotMarkCorrectAnswer()
         {
             Console.WriteLine("You didnt mark the correct answer with \"*\"");
         }
-        public static bool continueAddingQ()
+        public static bool ContinueAddingQ()
         {
             Console.WriteLine("Press <Enter> to continue, if you wish to add more questions");
             var playAgain = Console.ReadKey();
