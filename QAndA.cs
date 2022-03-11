@@ -11,7 +11,7 @@ namespace Quizgame
     {
         public string Question;
         public List<string> AnswersList = new List<string>();
-        public List<string> CorrectAnswers = new List<string>();
+        public List<int> ListCorrectAnswers = new List<int>();
 
         public override string ToString()
         {

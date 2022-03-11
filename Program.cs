@@ -21,16 +21,14 @@ namespace Quizgame // Note: actual namespace depends on the project name.
                 {
                     QAndA QAndAFromUser = UIMethods.UserInput();
 
-                    List<int> indexListOfCorrectAnswers = IndexCorrectAnswer(QAndAFromUser);
+                    QAndAFromUser.ListCorrectAnswers = IndexCorrectAnswer(QAndAFromUser);
 
-                    for (int i = 0; i < indexListOfCorrectAnswers.Count; i++)
+                    for (int i = 0; i < QAndAFromUser.ListCorrectAnswers.Count; i++)
                     {
-                        QAndAFromUser.AnswersList[indexListOfCorrectAnswers[i]] = QAndAFromUser.AnswersList[indexListOfCorrectAnswers[i]].Replace("*", "");
-
-                        QAndAFromUser.CorrectAnswers.Add(QAndAFromUser.AnswersList[indexListOfCorrectAnswers[i]]);
+                        QAndAFromUser.AnswersList[QAndAFromUser.ListCorrectAnswers[i]] = QAndAFromUser.AnswersList[QAndAFromUser.ListCorrectAnswers[i]].Replace("*", "");
                     }
 
-                    if (QAndAFromUser.CorrectAnswers == null)
+                    if (QAndAFromUser.ListCorrectAnswers == null)
                     {
                         UIMethods.DidNotMarkAnswer();
                         continue;
@@ -81,20 +79,16 @@ namespace Quizgame // Note: actual namespace depends on the project name.
 
                     roundsPlayed += 1;
 
-                    for (int i = 0; i < QAndAForTheRound.CorrectAnswers.Count; i++)
+                    if (AnswerIsCorrect(answerToIndex, QAndAForTheRound))
                     {
-                        if (QAndAForTheRound.AnswersList[answerToIndex] == QAndAForTheRound.CorrectAnswers[i])
-                        {
-                            UIMethods.GuessingRight();
-                            rightAnswers += 1;
-                            won = true;
-                            break;
-                        }
+                        UIMethods.GuessingRight();
+                        rightAnswers += 1;
+                        break;
                     }
-                    if (!won)
-                        {
-                            UIMethods.WrongGuess();
-                        }
+                    else
+                    {
+                        UIMethods.WrongGuess();
+                    }
                 }
                 
                 //Removing the question, after it has been asked to user
@@ -143,6 +137,18 @@ namespace Quizgame // Note: actual namespace depends on the project name.
                 }
             }
             return IndexesCorrectAnswers;
+        }
+        public static bool AnswerIsCorrect(int answerToIndex, QAndA QAndAForTheRound)
+        {
+            bool won = false;
+            for (int i = 0; i < QAndAForTheRound.ListCorrectAnswers.Count; i++)
+            {
+                if (QAndAForTheRound.ListCorrectAnswers[i] == answerToIndex)
+                {
+                    won = true;
+                }  
+            }
+            return won;
         }
     }
 }
