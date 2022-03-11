@@ -22,14 +22,13 @@ namespace Quizgame // Note: actual namespace depends on the project name.
                     QAndA QAndAFromUser = UIMethods.UserInput();
 
                     QAndAFromUser.ListCorrectAnswers = IndexCorrectAnswer(QAndAFromUser);
-
                     //Removing star from correct answers
-                    for (int i = 0; i < QAndAFromUser.ListCorrectAnswers.Count; i++)
+                    for (int i = 0; i < QAndAFromUser.AnswersList.Count; i++)
                     {
-                        QAndAFromUser.AnswersList[QAndAFromUser.ListCorrectAnswers[i]] = QAndAFromUser.AnswersList[QAndAFromUser.ListCorrectAnswers[i]].Replace("*", "");
+                        QAndAFromUser.AnswersList[i] = QAndAFromUser.AnswersList[i].TrimEnd(' ', '*');
                     }
 
-                    if (QAndAFromUser.ListCorrectAnswers == null)
+                    if (QAndAFromUser.ListCorrectAnswers.Count == 0)
                     {
                         UIMethods.DidNotMarkAnswer();
                         continue;
@@ -126,7 +125,7 @@ namespace Quizgame // Note: actual namespace depends on the project name.
 
         }
         /// <summary>
-        /// finds strings that has contains a star and add it to a internal list
+        /// Iterates through AnswerList in a QAndaA objects, and finds strings that has contains a star and add it to a internal list
         /// </summary>
         /// <param name="QAndAsFromUser"></param>
         /// <returns>returns a list with the indexes of the strings that contains a star</returns>
