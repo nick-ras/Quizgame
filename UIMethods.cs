@@ -20,18 +20,16 @@ namespace Quizgame
             for (int i = 0; i < 4; i++)
             {
                 Console.WriteLine("Type an answer, if its a correct one, then put \"*\" at the end");
-                qAndAObject.AnswersList.Add(Console.ReadLine());
-                if (qAndAObject.AnswersList[i].Contains('*'))
+                string answer = Console.ReadLine();
+                if (answer.Contains('*'))
                 {
-                    qAndAObject.AnswersList[i] = qAndAObject.AnswersList[i].Replace("*", "");
                     qAndAObject.ListCorrectAnswers.Add(i);
                 }
+                qAndAObject.AnswersList.Add(answer.Replace("*", ""));
             }
             return qAndAObject;
         }
 
-            
-        
         public static void DidNotMarkCorrectAnswer()
         {
             Console.WriteLine("You didnt mark the correct answer with \"*\"");

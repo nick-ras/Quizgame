@@ -34,7 +34,6 @@ namespace Quizgame // Note: actual namespace depends on the project name.
                         typingQandAs = false;
                     }
                 }
-
                 Serializer(ListOfObjects, path);
             }
 
@@ -48,7 +47,8 @@ namespace Quizgame // Note: actual namespace depends on the project name.
                 QAndA QAndAForTheRound = AllQAndA[rand.Next(AllQAndA.Count)];
                 bool won = false;
 
-                while (!answerCheckUp)
+                //Loop will break when answer is correct
+                while (true)
                 {
                     string answerString = UIMethods.ShowQAndAs(QAndAForTheRound);
 
@@ -65,12 +65,11 @@ namespace Quizgame // Note: actual namespace depends on the project name.
                         UIMethods.TooHighOrLow();
                         continue;
                     }
-                    else
-                    {
-                        answerCheckUp = true;
-                    }
-
+                    
                     roundsPlayed += 1;
+
+                    //Removing the question, after it has been asked to user
+                    AllQAndA.RemoveAt(AllQAndA.IndexOf(QAndAForTheRound));
 
                     if (AnswerIsCorrect(answerToIndex, QAndAForTheRound))
                     {
@@ -78,14 +77,10 @@ namespace Quizgame // Note: actual namespace depends on the project name.
                         rightAnswers += 1;
                         break;
                     }
-                    else
-                    {
-                        UIMethods.WrongGuess();
-                    }
+                    
+                    UIMethods.WrongGuess();
+                    break;
                 }
-                
-                //Removing the question, after it has been asked to user
-                AllQAndA.RemoveAt(AllQAndA.IndexOf(QAndAForTheRound));
 
                 if (roundsPlayed >= 10 || AllQAndA.Count < 1)
                 {                    
